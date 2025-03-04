@@ -1,0 +1,6 @@
+/* 存储全局样式 */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 确保元素的总宽度和高度包括边框和内边距 */
+}

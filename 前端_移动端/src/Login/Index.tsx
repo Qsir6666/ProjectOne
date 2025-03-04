@@ -6,7 +6,7 @@ const App: React.FC = () => {
 	return (
 		<>
 			登录
-			<button onClick={() => navigate("/cnm")}>登录</button>
+			<button onClick={() => navigate("/layout")}>登录</button>
 		</>
 	)
 }
