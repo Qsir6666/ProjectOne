@@ -13,6 +13,7 @@ var PDLRouter = require('./routes/PDL');
 var PQKRouter = require('./routes/PQK');
 var WSXRouter = require('./routes/WSX');
 
+
 var app = express();
 
 const cors = require('cors')
@@ -27,6 +28,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/imgs",express.static(path.join(__dirname, 'imgs')));
+app.use("/video",express.static(path.join(__dirname, 'video')));
 
 app.use('/QWG', QWGRouter);//齐文纲
 app.use('/HBC', HBCRouter);//何百川

@@ -9,6 +9,7 @@ const Index = lazy(() => import('../Layout/Components/Index/Index.tsx')) //主�
 const Msg = lazy(() => import('../Layout/Components/Message/Msg.tsx')) //信息
 const Mine = lazy(() => import('../Layout/Components/Mine/Mine.tsx')) //我的
 
+const Report=lazy(()=>import('../Layout/Components/Report/Report.tsx')) //上报隐患
 
 let routes = [
 	{ path: '/', element: <Navigate to="/login"></Navigate> },
@@ -19,12 +20,10 @@ let routes = [
 		children: [
 			{ index: true, element: <Index></Index> },
 			{ path: 'msg', element: <Msg></Msg> },
-			{ path: 'mine', element: <Mine></Mine> }
+			{ path: 'mine', element: <Mine></Mine> },
+			{ path: 'report', element: <Report></Report> },
 		]
 	},
-
-
-
 
 
 ]
