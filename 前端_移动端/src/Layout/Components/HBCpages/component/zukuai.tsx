@@ -20,4 +20,4 @@ const App: React.FC<IProps> = (props) => {
         </>
     )
 }
-export default App;
+export default App; 
