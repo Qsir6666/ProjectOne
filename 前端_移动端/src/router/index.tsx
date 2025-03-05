@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 // 一级路由
 import Login from '../Login/Index.tsx'
 import Layout from '../Layout/Layout.tsx'
+import Menu from '../Layout/Components/Index/menu.tsx'
 // 二级路由
 const Index = lazy(() => import('../Layout/Components/Index/Index.tsx')) //主页
 const Msg = lazy(() => import('../Layout/Components/Message/Msg.tsx')) //信息
@@ -22,7 +23,7 @@ let routes = [
 			{ path: 'mine', element: <Mine></Mine> }
 		]
 	},
-
+	{ path: '/menu', element: <Menu></Menu> },
 
 
 
