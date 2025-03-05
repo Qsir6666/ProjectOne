@@ -10,6 +10,8 @@ const Index = lazy(() => import('../Layout/Components/Index/Index.tsx')) //主�
 const Msg = lazy(() => import('../Layout/Components/Message/Msg.tsx')) //信息
 const Mine = lazy(() => import('../Layout/Components/Mine/Mine.tsx')) //我的
 
+//何百川
+const QingJia = lazy(() => import('../Layout/Components/HBCpages/qingjia.tsx'))
 
 let routes = [
 	{ path: '/', element: <Navigate to="/login"></Navigate> },
@@ -25,7 +27,8 @@ let routes = [
 	},
 	{ path: '/menu', element: <Menu></Menu> },
 
-
+	//何百川
+	{ path: '/qingjia', element: <QingJia /> },
 
 
 ]
