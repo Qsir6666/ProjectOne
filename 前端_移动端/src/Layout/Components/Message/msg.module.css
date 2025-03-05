@@ -1,0 +1,22 @@
+html {
+	font-size: 16px;  /* 默认字体大小 */
+  }
+
+.header {
+	width: 90%;
+	height: 10vh;
+	margin: 0 auto;
+	/* border: 1px red solid; */
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 1rem;
+}
+
+.vis {
+	visibility: hidden;
+}
+.fri {
+	font-size: 1.5rem;
+	margin-top: 1rem;
+}
