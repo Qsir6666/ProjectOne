@@ -2,6 +2,7 @@ import React from "react";
 import style from './Index.module.css'
 import { RightOutline  } from 'antd-mobile-icons'
 import { useNavigate } from "react-router-dom";
+import SwipeNavigation from "../SwipeNavigation/SwipeNavigation";
 
 const App: React.FC = () => {
     const navigate = useNavigate()
@@ -24,6 +25,7 @@ const App: React.FC = () => {
     }
     return (
         <div className={style.indexPage}>
+            <SwipeNavigation />
             <div className={style.top}>
                 <p>河北省校园安全数字化管理平台</p>
                 <p>建设“高效、安全、智能”智慧校园</p>

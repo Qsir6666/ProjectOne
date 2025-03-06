@@ -1,10 +1,14 @@
 import React from "react";
 import style from './mine.module.css'
 import { images } from '../../../Imgs/jxh_imgs/imgage'
+import SwipeNavigation from "../SwipeNavigation/SwipeNavigation";
+
 
 const App: React.FC = () => {
     return (
         <div>
+            <SwipeNavigation />
+
             <div className={style.header}></div>
             <div className={style.content}>
                 <div><img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.ggX8e6U3YzyhPvp8qGZtQwHaHa?rs=1&pid=ImgDetMain" alt="" /></div>
@@ -16,21 +20,21 @@ const App: React.FC = () => {
             <div className={style.hrefs}>
                 <div className={style.hrefs_context}>
                     <div>{images.men}</div>
-                    <div>
+                    <div className={style.hrefs_text}>
                         <div>通讯录</div>
                         <div>⟩</div>
                     </div>
                 </div>
                 <div className={style.hrefs_context}>
                     <div>{images.suo}</div>
-                    <div>
+                    <div className={style.hrefs_text}>
                         <div>修改密码</div>
                         <div>⟩</div>
                     </div>
                 </div>
                 <div className={style.hrefs_context}>
                     <div>{images.i}</div>
-                    <div>
+                    <div className={style.hrefs_text}>
                         <div>关于</div>
                         <div>⟩</div>
                     </div>
