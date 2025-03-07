@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 // 一级路由
 import Login from '../Login/Index.tsx'
 import Layout from '../Layout/Layout.tsx'
+import Menu from '../Layout/Components/Index/menu.tsx'
 // 二级路由
 const Index = lazy(() => import('../Layout/Components/Index/Index.tsx')) //主页
 const Msg = lazy(() => import('../Layout/Components/Message/Msg.tsx')) //信息
@@ -12,6 +13,8 @@ const Mine = lazy(() => import('../Layout/Components/Mine/Mine.tsx')) //我的
 const Report = lazy(() => import('../Layout/Components/Report/Report.tsx')) //上报隐患
 const Examine = lazy(() => import('../Layout/Components/Examine/Examine.tsx')) // 日常检查
 const ExamineDate = lazy(()=>import('../Layout/Components/ExamineDate/ExamineDate.tsx')) //检查隐患
+//何百川
+const QingJia = lazy(() => import('../Layout/Components/HBCpages/qingjia.tsx'))
 
 let routes = [
 	{ path: '/', element: <Navigate to="/login"></Navigate> },
@@ -31,8 +34,12 @@ let routes = [
 	// 日常检查
 	{ path: 'examine', element: <Examine></Examine> },
 	// 检查页面(未检查，已检查)
-	{path:'ExamineDate',element:<ExamineDate></ExamineDate>}
+	{path:'ExamineDate',element:<ExamineDate></ExamineDate>},
 
+	{ path: '/menu', element: <Menu></Menu> },
+
+	//何百川
+	{ path: '/qingjia', element: <QingJia /> },
 ]
 
 export default routes
