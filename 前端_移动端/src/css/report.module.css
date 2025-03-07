@@ -1,0 +1,20 @@
+
+  #fileInput::before {
+    content: "+";
+    font-size: 48px;
+    display: block;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 110px;
+    color: rgb(118, 118, 118);
+
+  }
+
+  #fileInput{
+    padding: 6px 12px;
+    border: 1px solid rgb(252, 251, 251);
+    background-color: rgb(247, 247, 247);
+    height: 160px;
+    width: 160px;
+    
+  }

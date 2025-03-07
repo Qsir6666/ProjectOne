@@ -30,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/imgs",express.static(path.join(__dirname, 'imgs')));
 app.use("/video",express.static(path.join(__dirname, 'video')));
+// app.use("/uploads",express.static(path.join(__dirname, 'uploads')));
 
 app.use('/QWG', QWGRouter);//齐文纲
 app.use('/HBC', HBCRouter);//何百川

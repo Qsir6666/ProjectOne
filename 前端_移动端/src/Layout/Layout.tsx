@@ -14,7 +14,7 @@ const Layout: React.FC = () => {
         <Outlet />
       </div>
       
-      {pathname !== '/layout/report' ? <div className='LayoutPage_tabbar'>
+      {pathname !== '/layout/report' ||  '/layout/examine' ? <div className='LayoutPage_tabbar'>
         <LayoutPage_Tabbar />
       </div> : undefined}
     </div>

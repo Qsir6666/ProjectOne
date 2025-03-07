@@ -1,7 +1,8 @@
+const { text } = require('body-parser');
 const mongoose = require('mongoose');
 
 // 连接 MongoDB 数据库
-mongoose.connect('mongodb://127.0.0.1:27017/MyProjects')
+mongoose.connect('mongodb+srv://2660023684:151416@medicalitems.5hia4.mongodb.net/MyProjects')
   .then(() => {
     console.log('连接成功');
   })
@@ -11,7 +12,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/MyProjects')
 
 // 隐患类型模式
 const TypeSchema = new mongoose.Schema({
-  type: String
+  text: String,
+  value:String,
 });
 
 // 隐患类型模型
