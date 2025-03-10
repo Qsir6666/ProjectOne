@@ -4,7 +4,14 @@ import { Navigate } from "react-router-dom";
 // 一级路由
 import Login from '../Login/Index.tsx'
 import Layout from '../Layout/Layout.tsx'
-import Menu from '../Layout/Components/Index/menu.tsx'
+import Menu from '../Layout/Components/Index/Menu.tsx'
+
+// JXH
+import Nurse from '../J250310/Nurse/nurse.tsx'
+import Mission from '../J250310/Mission/mission.tsx'
+import Nurses from '../J250310/Nurse/nurses.tsx'
+import Addfault from "../J250310/Nurse/addFault.tsx";
+
 // 二级路由
 const Index = lazy(() => import('../Layout/Components/Index/Index.tsx')) //主页
 const Msg = lazy(() => import('../Layout/Components/Message/Msg.tsx')) //信息
@@ -29,6 +36,13 @@ let routes = [
 
 	//何百川
 	{ path: '/qingjia', element: <QingJia /> },
+
+
+	// JXH
+	{ path: '/nurse', element: <Nurse /> },
+	{ path: '/mission', element: <Mission /> },
+	{ path: '/nurses', element: <Nurses /> },
+	{ path: '/addfault', element: <Addfault /> },
 
 
 ]
