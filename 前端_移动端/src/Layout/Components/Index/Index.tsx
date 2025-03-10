@@ -3,7 +3,7 @@ import style from './Index.module.css'
 import { RightOutline  } from 'antd-mobile-icons'
 import { useNavigate } from "react-router-dom";
 import SwipeNavigation from "../SwipeNavigation/SwipeNavigation";
-
+    
 const App: React.FC = () => {
     const navigate = useNavigate()
     const num = 5
@@ -139,7 +139,7 @@ const App: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>   
     )
 }
 export default App;
