@@ -11,25 +11,17 @@
   },
   "dependencies": {
     "@nutui/nutui-react": "^2.7.9",
-<<<<<<< HEAD
-    "animate.css": "^4.1.1",
-=======
     "@react-vant/icons": "^0.1.0",
->>>>>>> 8401dce89ca237daa3080cb332b9af1a52392237
+    "animate.css": "^4.1.1",
     "antd-mobile": "^5.38.1",
+    "antd-mobile-icons": "^0.3.0",
     "axios": "^1.8.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^7.2.0",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "spark-md5": "^3.0.2",
-=======
-=======
     "react-spring": "^9.7.5",
->>>>>>> JXH
     "react-vant": "^3.3.5",
->>>>>>> 8401dce89ca237daa3080cb332b9af1a52392237
+    "spark-md5": "^3.0.2",
     "tdesign-react": "^1.11.0"
   },
   "devDependencies": {
