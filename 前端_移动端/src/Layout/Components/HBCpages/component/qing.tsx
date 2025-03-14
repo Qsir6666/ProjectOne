@@ -11,7 +11,7 @@ const App: React.FC<IProps> = (props) => {
         console.log('点击了返qing')
         
 
-    }
+    }      
     return (
         <>
         <div className="navtil">

@@ -14,11 +14,16 @@
     "@react-vant/icons": "^0.1.0",
     "animate.css": "^4.1.1",
     "antd-mobile": "^5.38.1",
+    "antd-mobile-icons": "^0.3.0",
     "axios": "^1.8.1",
     "dayjs": "^1.11.13",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^7.2.0",
+<<<<<<< HEAD
+=======
+    "react-spring": "^9.7.5",
+>>>>>>> origin/main
     "react-vant": "^3.3.5",
     "spark-md5": "^3.0.2",
     "tdesign-react": "^1.11.0"
