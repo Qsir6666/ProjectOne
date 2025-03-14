@@ -4,42 +4,65 @@ const multer = require("multer");
 var path = require('path');
 const fs = require("fs");
 const uploadDir = path.join(__dirname, "/uploads");
-// const uploadDir = ("/uploads",express.static(path.join(__dirname, 'uploads')));
 
-const { HiddenTroubleModel,TypeModel, } = require('../db/index')
+const { HiddenTroubleModel, TypeModel, loginModel, } = require('../db/index')
 
-// 上报隐患数据接口
-router.get('/hidden',async (req,res)=>{
+// 登陆的用户接口
+router.get('/login', async (req, res) => {
 
-  let hiddenFind = await HiddenTroubleModel.find()
-  console.log(hiddenFind);
+  let loginFind = await loginModel.find()
+  // console.log(loginFind);
 
   res.send({
-    code:200,
-    hiddenFind,
-    
+    code: 200,
+    data: loginFind,
+
+  })
+
+})
+// 上报隐患数据接口
+router.get('/hidden', async (req, res) => {
+  // let { abc } = req.query
+  // console.log(abc);
+  
+  // let onKe = new RegExp(abc)
+  // let arr = [{}]
+  // if (abc) {
+  //   arr.push({ abc: onKe })
+  // }
+
+  let hiddenFind = await HiddenTroubleModel.find().populate('userName')
+  // console.log(hiddenFind);
+
+  res.send({
+    code: 200,
+    data: hiddenFind,
+
   })
 })
 // 上报隐患类型数据接口
-router.get('/type',async (req,res)=>{
+router.get('/type', async (req, res) => {
 
   let typeFind = await TypeModel.find()
+  // console.log(typeFind,'111');
 
   res.send({
-    code:200,
-    typeFind,
+    code: 200,
+    data: typeFind,
 
   })
 })
 // 提交隐患
-router.post('/hiddenAdd',(req,res)=>{
+router.post('/hiddenAdd', (req, res) => {
   let add = req.body
-  // console.log(add);
+  // const time = add.time
+  console.log(add.time);
+
   HiddenTroubleModel.create(add)
 
   res.send({
-    code:200,
-    msg:"提交成功",
+    code: 200,
+    msg: "提交成功",
 
   })
 })
@@ -50,8 +73,8 @@ router.post("/check", (req, res) => {
   // console.log("fileHash check",fileHash)
 
   const fileChunkDir = path.join(uploadDir, fileHash); // 分片存储目录
-  console.log(fileChunkDir,'asaaaadas');
-  
+  console.log(fileChunkDir, 'asaaaadas');
+
   if (!fs.existsSync(fileChunkDir)) {
     return res.json([]); // 如果目录不存在，返回空数组
   }
@@ -63,8 +86,8 @@ router.post("/check", (req, res) => {
   res.json(uploadedChunks);
   // 将接收到的信息传到前端
   res.send({
-    code:200,
-    fileHashs:fileHash,
+    code: 200,
+    fileHashs: fileHash,
 
   })
 });
@@ -83,15 +106,15 @@ const storage = multer.diskStorage({
     const { chunkIndex } = req.query;
     cb(null, `chunk-${chunkIndex}`);
   },
-  
+
 });
 
-const upload = multer({ storage:storage });
+const upload = multer({ storage: storage });
 
 // 上传文件分片
 router.post("/upload", upload.single("chunk"), (req, res) => {
-    const { fileHash } = req.body;
-    res.status(200).send("分片上传成功");
+  const { fileHash } = req.body;
+  res.status(200).send("分片上传成功");
 });
 
 // 合并分片
@@ -112,7 +135,7 @@ router.post("/merge", (req, res) => {
   }
 
   writeStream.end(); // 关闭流
-//   fs.rmdirSync(fileChunkDir); // 删除分片目录--留下来，可以看上传记录
+  //   fs.rmdirSync(fileChunkDir); // 删除分片目录--留下来，可以看上传记录
   res.send("文件合并完成");
 });
 

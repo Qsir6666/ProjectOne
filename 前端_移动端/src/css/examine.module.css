@@ -94,9 +94,11 @@
 }
 .orderOne{
     margin-left: 26vw;
+    /* color: rgb(0, 168, 255); */
 }
 .orderTow{
     margin-left: 27vw;
+    /* color: rgb(0, 168, 255); */
 }
 .sao{
     position: absolute;
@@ -125,4 +127,7 @@
 }
 .abcp:active{
     background-color: whitesmoke;
+}
+.abcp{
+    color: rgb(0, 168, 255);
 }

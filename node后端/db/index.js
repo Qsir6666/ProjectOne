@@ -1,7 +1,6 @@
-const { text } = require('body-parser');
 const mongoose = require('mongoose');
 
-<<<<<<< HEAD
+
 // 连接 MongoDB 数据库
 mongoose.connect('mongodb+srv://2660023684:151416@medicalitems.5hia4.mongodb.net/MyProjects')
   .then(() => {
@@ -10,22 +9,21 @@ mongoose.connect('mongodb+srv://2660023684:151416@medicalitems.5hia4.mongodb.net
   .catch(() => {
     console.log('连接失败');
   });
-=======
-//此处应为共享仓库  还没整
-mongoose.connect('mongodb+srv://qiusheng:Rosedale1314@public-project.avgf0.mongodb.net/project').then(() => {
-    console.log('over!');
-}).catch(err => {
-    console.log('out');
+
+// 登录表
+const loginSchema = new mongoose.Schema({
+  userName: String,
+  password: String,
+  school: String,
+  imgs: String,
 })
+const loginModel = mongoose.model('login', loginSchema, 'login')
 
-
-
->>>>>>> 8401dce89ca237daa3080cb332b9af1a52392237
 
 // 隐患类型模式
 const TypeSchema = new mongoose.Schema({
   text: String,
-  value:String,
+  value: String,
 });
 
 // 隐患类型模型
@@ -44,24 +42,38 @@ const HiddenTroubleSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  // 上报时间
+  time:{
+    type:Date,
+  },
+  // 隐患状态
+  state:{
+    type:String,
+    enum:['1','2','3','4'],//1待审核，2处理中，3已完成，4我的
+    default:1
+  },
   // 隐患类型
   type: {
     type: mongoose.Types.ObjectId,
     ref: 'Type' // 引用 Type 模型
-  }
+  },
+
+  // 提交人信息
+  userName: {
+    type: mongoose.Types.ObjectId,
+    ref: 'login',
+  },
+
 });
 
-<<<<<<< HEAD
 // 上报隐患模型
 const HiddenTroubleModel = mongoose.model('HiddenTrouble', HiddenTroubleSchema, 'hidden');
 
 module.exports = {
   HiddenTroubleModel,
-  TypeModel
+  TypeModel,
+  loginModel,
+
 };
-=======
-module.exports = {
 
-}
 
->>>>>>> 8401dce89ca237daa3080cb332b9af1a52392237

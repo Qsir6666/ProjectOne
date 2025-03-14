@@ -6,7 +6,6 @@ import './Layout.css'
 const Layout: React.FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
-  console.log('1111111', pathname);
 
   return (
     <div className='LayoutPage'>

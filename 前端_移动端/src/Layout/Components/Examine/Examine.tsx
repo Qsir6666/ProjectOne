@@ -1,5 +1,5 @@
-import { Form, Button, InputNumber, Input, TextArea } from '@nutui/nutui-react'
-import { ArrowLeft, Calendar, Check, Order,ArrowRight,RemoveRectangle } from '@nutui/icons-react'
+import { Form, Button, Toast, } from '@nutui/nutui-react'
+import { ArrowLeft, Calendar, Check, Order, ArrowRight } from '@nutui/icons-react'
 import '@nutui/nutui-react/dist/style.css'
 import styles from '../../../css/examine.module.css'
 import 'animate.css';
@@ -8,11 +8,15 @@ import { useNavigate } from 'react-router-dom';
 const examine = () => {
   const nav = useNavigate()
 
-  
+  const Fan=()=>{
+    nav('/layout');
+    // Toast.show('返回');
+  }
+
   return (
     <div className={styles.box}>
       <div className={styles.yuan}>
-        <div className={styles.tu}><ArrowLeft /></div>
+        <div className={styles.tu}><ArrowLeft onClick={() => Fan()}/></div>
         <div className={styles.abc}>
           <div className={styles.ul}>
             <h2>下午好~</h2>
@@ -25,7 +29,7 @@ const examine = () => {
         </div>
 
         <div>
-          <div className={styles.boxTow} >
+          <div className={styles.boxTow} > 
             <Form
               // divider
               footer={
@@ -43,18 +47,18 @@ const examine = () => {
               }
             >
               <Form.Item
-                label={<Order className={styles.order}/>}
+                label={<Order className={styles.order} />}
                 name="username"
               >
-                <p className={styles.abcp}>未检查 <span className={styles.orderOne}>2</span><ArrowRight /></p>
+                <p className={styles.abcp}>未检查 <span className={styles.orderOne}>2</span><ArrowRight style={{color:"#00a8ff"}}/></p>
               </Form.Item>
               <Form.Item
-                label={<Check className={styles.check}/>}
+                label={<Check className={styles.check} />}
                 name="age"
               >
-                <p className={styles.abcp}>已检查<span className={styles.orderTow}>3</span><ArrowRight /></p>
+                <p className={styles.abcp}>已检查<span className={styles.orderTow}>3</span><ArrowRight style={{color:"#00a8ff"}}/></p>
               </Form.Item>
-            
+
             </Form>
 
           </div>
@@ -66,15 +70,15 @@ const examine = () => {
         </div>
 
       </div>
-        <div className={styles.sao}>
-          <div className={styles.rem}>
+      <div className={styles.sao}>
+        <div className={styles.rem}>
           {/* <RemoveRectangle /> */}
           [-]
-          </div>
-          <p className={styles.saoOne}>
-            扫码检查
-          </p>
         </div>
+        <p className={styles.saoOne}>
+          扫码检查
+        </p>
+      </div>
     </div>
   )
 }

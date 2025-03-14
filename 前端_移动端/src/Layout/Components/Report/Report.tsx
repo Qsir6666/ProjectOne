@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavBar, Toast, Picker, Cell, TextArea, Input, Form, Switch, Notify } from '@nutui/nutui-react';
+import { Sticky, NavBar, Toast, Picker, Cell, TextArea, Input, Form, Switch, Notify } from '@nutui/nutui-react';
 import { ArrowLeft, Close, } from '@nutui/icons-react';
 import { useNavigate } from "react-router-dom";
 import sparkMD5 from 'spark-md5';
 import axios from 'axios';
 import report from '../../../css/report.module.css';
+// 接口
+import userService from '../../../../axios/userService'
+import TimeFormatter from "../../../pages/TimeFormatter";
 
 // 定义常量，每个文件分片的大小为 5MB
 const CHUNK_SIZE = 5 * 1024 * 1024;
@@ -18,7 +21,7 @@ interface PickerOption {
     className?: string | number;
 }
 
-const http = 'http://localhost:3000'
+const http = "http://localhost:3000"
 // 定义 Report 组件
 const Report: React.FC = () => {
     // 用于页面导航
@@ -42,21 +45,23 @@ const Report: React.FC = () => {
 
     // 获取隐患类型
     const type = async () => {
-        const { data: { code, typeFind } } =
-            await axios.get(`${http}/YZY/type`)
-        if (code == 200) {
-            setoptions(typeFind)
+        try {
+            const data = await userService.getType();
+            setoptions(data)
+        } catch (error) {
+            console.error("加载隐患类型失败", error);
         }
     }
     useEffect(() => {
         type()
     }, [])
-    useEffect(() => {
-        console.log(options);
-    }, [options])
+
     // useEffect(())
     // 提交隐患
-
+    // const reportTime = new Date()
+    // const data = {
+    //     reportTime: reportTime.toISOString()
+    // }
     const hiddenAdd = async () => {
         if (value !== '') {
             const { data: { code, msg } } =
@@ -66,13 +71,16 @@ const Report: React.FC = () => {
                     PhotosOrVideos: `${http}` + "/routes/uploads/" + file.name,
                     place: place,
                     dispose: checkedAsync,
+                    userName: '67ceda39068d580ff8b29676',
+                    time: new Date(),
+
                 })
             if (code == 200) {
                 Notify.success(msg)
                 // setTimeout(()=>{
                 //     nav('/layout')
                 // },1000)
-               
+
             }
         } else {
             Notify.danger("请输入隐患内容")
@@ -179,7 +187,7 @@ const Report: React.FC = () => {
             totalChunks,
         });
 
-        Notify.success('上传成功！')
+        // Notify.success('上传成功！')
         uploading.current = false;
     };
 
@@ -195,16 +203,18 @@ const Report: React.FC = () => {
     return (
         <div>
             {/* 头部 */}
-            <NavBar
-                right={<span onClick={() => { hiddenAdd(),handleUpload() }}>提交</span>}
-                left={<Close onClick={() => Toast.show('取消')} />}
-                back={<ArrowLeft />}
-                onBackClick={() => { nav('/layout'); Toast.show('返回'); }}
-            >
-                <div className="title">
-                    <span className="desc">上报隐患</span>
-                </div>
-            </NavBar>
+            <Sticky>
+                <NavBar
+                    right={<span onClick={() => { hiddenAdd(), handleUpload() }}>提交</span>}
+                    left={<Close onClick={() => Toast.show('取消')} />}
+                    back={<ArrowLeft />}
+                    onBackClick={() => { nav('/layout'); }}
+                >
+                    <div className="title">
+                        <span className="desc">上报隐患</span>
+                    </div>
+                </NavBar>
+            </Sticky>
             {/* 隐患类型 */}
             <Cell
                 title="隐患类型"
