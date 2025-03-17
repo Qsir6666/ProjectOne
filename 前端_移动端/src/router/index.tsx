@@ -1,30 +1,21 @@
-import { Children, lazy } from "react";
+import React,{ lazy } from "react";
 import { Navigate } from "react-router-dom";
 
 // 一级路由
 import Login from '../Login/Index.tsx'
 import Layout from '../Layout/Layout.tsx'
-import Menu from '../Layout/Components/Index/Menu.tsx'
-
-// JXH
-import Nurse from '../J250310/Nurse/nurse.tsx'
-import Mission from '../J250310/Mission/mission.tsx'
-import Nurses from '../J250310/Nurse/nurses.tsx'
-import Addfault from "../J250310/Nurse/addFault.tsx";
+import Menu from '../Layout/Components/Index/menu.tsx'
+import Bjkq from '../Layout/Components/Index/Qwg/Bjkq.tsx' //班级考勤
+import Kqtj from '../Layout/Components/Index/Qwg/Kqtj.tsx'  //考勤统计
+import Kqtj_detail1 from '../Layout/Components/Index/Qwg/kqtj_detail1.tsx'  //考勤统计 --按班级展示考勤
+import Kqtj_detail2 from '../Layout/Components/Index/Qwg/kqtj_detail2.tsx'  //考勤统计 --按年租展示考勤
+import Kqtj_1_child from '../Layout/Components/Index/Qwg/Kqtj_1_child.tsx'  //考勤统计 --按年租展示考勤
 
 // 二级路由
-const Index = lazy(() => import('../Layout/Components/Index/Index.tsx')) //主页
+const Index = React.lazy(() => import('../Layout/Components/Index/Index.tsx')) //主页
 const Msg = lazy(() => import('../Layout/Components/Message/Msg.tsx')) //信息
 const Mine = lazy(() => import('../Layout/Components/Mine/Mine.tsx')) //我的
 
-// 杨振宇
-const Report = lazy(() => import('../Layout/Components/Report/Report.tsx')) //上报隐患
-const Examine = lazy(() => import('../Layout/Components/Examine/Examine.tsx')) // 日常检查
-const ExamineDate = lazy(() => import('../Layout/Components/ExamineDate/ExamineDate.tsx')) //检查隐患
-const Check = lazy(() => import('../Layout/Components/Check/Check.tsx')) //隐患排查
-const Detail = lazy(() => import('../../Yzy/Detail.tsx')) //隐患详情
-const Faction = lazy(() => import('../../Yzy/Faction.tsx')) //派指人员维修
-//何百川
 const QingJia = lazy(() => import('../Layout/Components/HBCpages/qingjia.tsx'))
 
 let routes = [
@@ -36,38 +27,24 @@ let routes = [
 		children: [
 			{ index: true, element: <Index></Index> },
 			{ path: 'msg', element: <Msg></Msg> },
-			{ path: 'mine', element: <Mine></Mine> },
-
-		],
-
+			{ path: 'mine', element: <Mine></Mine> }
+		]
 	},
-	//上报隐患
-	{ path: '/report', element: <Report></Report> },
-	// 日常检查
-	{ path: '/examine', element: <Examine></Examine> },
-	// 检查页面(未检查，已检查)
-	{ path: '/ExamineDate', element: <ExamineDate></ExamineDate> },
-	// 隐患排查
-	{ path: '/Check', element: <Check></Check> },
-	//隐患详情
-	{ path: '/Detail', element: <Detail></Detail> },
-	//派指人员维修
-	{ path: '/Faction', element: <Faction></Faction> },
-
-
 	{ path: '/menu', element: <Menu></Menu> },
 
 	//何百川
 	{ path: '/qingjia', element: <QingJia /> },
 
+	// qwg
+	{ path: '/bjkq', element: <Bjkq /> },//班级学生考勤页面
+	{ path: '/kqtj', element: <Kqtj /> },//考勤统计页面
+	{ path: '/kqtj_detail1', element: <Kqtj_detail1 /> },//考勤统计1 ——按照班级统计页面
+	{ path: '/kqtj_1_child', element: <Kqtj_1_child /> },//考勤统计1.1 ——展示单个班级考勤
 
-	// JXH
-	{ path: '/nurse', element: <Nurse /> },
-	{ path: '/mission', element: <Mission /> },
-	{ path: '/nurses', element: <Nurses /> },
-	{ path: '/addfault', element: <Addfault /> },
+	{ path: '/kqtj_detail2', element: <Kqtj_detail2 /> },//考勤统计2 ——按照年组展示考勤
 
 
+	
 ]
 
-export default routes
+export default routes 

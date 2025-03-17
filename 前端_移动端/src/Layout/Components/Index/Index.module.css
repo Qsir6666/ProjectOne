@@ -1,7 +1,7 @@
 
 .top{
     background-color: #60B6FA;
-    height: 120px;
+    height: 118px;
     overflow: hidden;
 }
 .top p:first-child{
@@ -17,7 +17,7 @@
     margin: 10px 0 0 15px;  
     letter-spacing: 0.5px;
 }
-.nav{
+.nav1{
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -26,8 +26,14 @@
 
 .navitem{
     width: 25%;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 10px 0;
+}
+
+.navitem p{
+
 }
 
 .footer{
@@ -52,6 +58,8 @@
     letter-spacing: 0.5px;
     font-size: 13px;
     color: gray;
+    display: flex;
+    align-items: center;
 }
 
 .footer_item{

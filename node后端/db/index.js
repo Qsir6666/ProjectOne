@@ -1,129 +1,41 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-
-// 连接 MongoDB 数据库
-mongoose.connect('mongodb+srv://2660023684:151416@medicalitems.5hia4.mongodb.net/MyProjects')
-  .then(() => {
-    console.log('连接成功');
-  })
-  .catch(() => {
-    console.log('连接失败');
-  });
-<<<<<<< HEAD
-
-// 登录表
-const loginSchema = new mongoose.Schema({
-  userName: String,
-  password: String,
-  school: String,
-  imgs: String,
-})
-const loginModel = mongoose.model('login', loginSchema, 'login')
-
-
-=======
-  
-// JXH
-// mongoose.connect('mongodb://127.0.0.1/2025666').then(rep => {
-//   console.log('连接成功2');
+//此处应为共享仓库  还没整
+// mongoose.connect('mongodb+srv://qiusheng:Rosedale1314@public-project.avgf0.mongodb.net/project').then(() => {
+//     console.log('over!');
 // }).catch(err => {
-//   console.log('连接失败2');
+//     console.log('out');
 // })
 
 
+mongoose.connect('mongodb://127.0.0.1:27017/zg6_practice').then(() => {
+    console.log('连接成功');
+}).catch(() => {
+    console.log('连接失败');
+})
 
->>>>>>> origin/main
-// 隐患类型模式
-const TypeSchema = new mongoose.Schema({
-  text: String,
-  value: String,
-});
+//班级信息列表 
+const classSchema = new mongoose.Schema({
+    teacherName: String,  //班主任姓名
+    class: String, //表示几年级（1~6）
+    grade: String, //表示哪个班（1~3）
+    phone: String  //教师联系方式
+})
+const classModel = mongoose.model('class', classSchema, 'class')
 
-// 隐患类型模型
-const TypeModel = mongoose.model('Type', TypeSchema, 'type');
-
-// 上报隐患模式
-const HiddenTroubleSchema = new mongoose.Schema({
-  // 隐患信息
-  detail: String,
-  // 照片或视频
-  PhotosOrVideos: String,
-  // 隐患地点
-  place: String,
-  // 是否处理
-  dispose: {
-    type: Boolean,
-    default: false
-  },
-  // 上报时间
-  time:{
-    type:Date,
-  },
-  // 隐患状态
-  state:{
-    type:String,
-    enum:['1','2','3','4'],//1待审核，2处理中，3已完成，4我的
-    default:1
-  },
-  // 隐患类型
-  type: {
-    type: mongoose.Types.ObjectId,
-    ref: 'Type' // 引用 Type 模型
-  },
-
-  // 提交人信息
-  userName: {
-    type: mongoose.Types.ObjectId,
-    ref: 'login',
-  },
-
-});
-
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
-// 上报隐患模型
-const HiddenTroubleModel = mongoose.model('HiddenTrouble', HiddenTroubleSchema, 'hidden');
-
-// // JXH
-// const Jbaschema = new mongoose.Schema({
-//     name: String,
-//     id:Number
-// })
-// const JbaseModel = mongoose.model('Jbase', Jbaschema)
-
-// const Jpatrol = new mongoose.Schema({
-//     time: String,
-//     status:{
-//         type: Boolean,
-//         default: true
-//     },
-//     summary:String,
-//     imgUrl:{
-//         type:Array,
-//         default:[] 
-//     },
-//     id:{
-//         ref: 'Jbase',
-//         type: mongoose.Schema.Types.ObjectId
-//     }
-// })
-// const JpatrolModel = mongoose.model('Jpatrol', Jpatrol)
-
-
-
+// 学生信息列表
+const stuedentSchema = new mongoose.Schema({
+    name: String,   //学生姓名 
+    classid: { type: mongoose.Types.ObjectId, ref: 'class' }, //绑定班级外键
+    attendance: [{
+        date: Number,   // 直接存 Date.now()
+        cate: { type: String, enum: ['1','2','3','4'] }
+      }]
+})
+const studentModel = mongoose.model('student', stuedentSchema)
 
 module.exports = {
-  HiddenTroubleModel,
-  TypeModel,
-<<<<<<< HEAD
-  loginModel,
+    classModel,
+    studentModel,
+}
 
-};
-
-
-=======
-  // JbaseModel,JpatrolModel
-};
->>>>>>> origin/main

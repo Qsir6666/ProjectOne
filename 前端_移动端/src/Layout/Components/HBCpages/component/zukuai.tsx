@@ -18,6 +18,6 @@ const App: React.FC<IProps> = (props) => {
             <NavBar onBack={back}>{props.title}</NavBar>
         </div>
         </>
-    )      
+    )
 }
 export default App; 

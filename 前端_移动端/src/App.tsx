@@ -2,7 +2,6 @@ import React, { Suspense } from 'react'
 import { useRoutes } from 'react-router-dom'
 import routes from './router/index.tsx'
 import './App.css' //存放全局样式
-import '@nutui/nutui-react/dist/style.css'
 
 function App() {
   let element = useRoutes(routes)
