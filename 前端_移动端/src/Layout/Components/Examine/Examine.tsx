@@ -50,7 +50,7 @@ const examine = () => {
                   }}
                 >
                   <Button nativeType="submit" block type="primary">
-                    哈哈
+                    确定
                   </Button>
                 </div>
               }

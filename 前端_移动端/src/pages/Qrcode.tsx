@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import QRCode from 'react-qr-code';
+import { QRCodeSVG } from 'qrcode.react';  // 修改导入方式
 import { Overlay, Loading, ConfigProvider } from '@nutui/nutui-react'
 import { QrCode, } from '@nutui/icons-react';
 
@@ -10,33 +10,29 @@ const QRCodeGenerator = ({
     size = 256,
     bgColor = '#ffffff',
     fgColor = '#000000',
-    level = 'Q',
+    level = 'H',  // 提高容错率
 }) => {
-
-    const qrCodeRef = useRef(null); // 引用二维码的 <svg> 元素
+    const qrCodeRef = useRef(null);
 
     const downloadQRCode = () => {
         if (qrCodeRef.current) {
-            const svg = qrCodeRef.current; // 获取 <svg> 元素
-            const svgData = new XMLSerializer().serializeToString(svg); // 将 <svg> 转换为字符串
-            // 创建 <canvas> 元素
+            const svg = qrCodeRef.current;
+            const svgData = new XMLSerializer().serializeToString(svg);
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            // 设置 canvas 尺寸与二维码一致
+            if (!ctx) return;
             canvas.width = size;
             canvas.height = size;
-            // 将 SVG 绘制到 canvas 上
             const img = new Image();
             img.onload = () => {
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                // 将 canvas 转换为 JPEG 并下载
-                const url = canvas.toDataURL('image/jpeg', 1.0); // 1.0 表示最高质量
+                const url = canvas.toDataURL('image/jpeg', 1.0);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'qrcode.jpg'; // 下载文件名
+                link.download = 'qrcode.jpg';
                 link.click();
             };
-            img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+            img.src = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgData)))}`;
         }
     };
 
@@ -52,14 +48,13 @@ const QRCodeGenerator = ({
     const handleToggleShow = () => {
         setVisible(true)
         setTimeout(() => {
-            // setVisible(false)
             seta(true)
         }, 2000)
     }
     const onClose = () => {
         setVisible(false)
+        seta(false);
     }
-
 
     return (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
@@ -70,19 +65,19 @@ const QRCodeGenerator = ({
                 {buttonText}
             </button>
 
-
             <Overlay visible={visible} onClick={onClose}>
                 <div className="wrapper" style={wrapperStyle}>
                     {a ? undefined : <Loading>生成中</Loading>}
-                    {a ? <div>
+                    {a ? <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>
                         <div>
-                            <QRCode
+                            <QRCodeSVG
                                 ref={qrCodeRef}
-                                value={value} // 二维码内容
-                                size={size} // 二维码大小
-                                bgColor={bgColor} // 背景颜色
-                                fgColor={fgColor} // 前景颜色
-                                level={level} // 容错级别（L/M/Q/H）
+                                value={value}
+                                size={size}
+                                bgColor={bgColor}
+                                fgColor={fgColor}
+                                level={level}
+                                includeMargin={true}
                             />
                         </div>
                         <button
@@ -92,7 +87,6 @@ const QRCodeGenerator = ({
                             {downloadText}
                         </button>
                     </div> : undefined}
-
                 </div>
             </Overlay>
         </div>

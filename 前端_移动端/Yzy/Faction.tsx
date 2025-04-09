@@ -182,7 +182,7 @@ const Faction: React.FC = () => {
           title: "提示",
           content: data.message,
           onConfirm: () => {
-            nav(-1);
+            nav('/Check');
           },
         });
       } catch (error) {

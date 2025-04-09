@@ -11,7 +11,7 @@ const BASE_URL = 'http://127.0.0.1:3000';
 interface QRCodeResult {
   type: 'internal' | 'external' | 'unknown';
   content: string;
-  timestamp: number;
+  timestamp: string;
   data?: {
     _id: string;
     state: string;
@@ -20,6 +20,16 @@ interface QRCodeResult {
     PhotosOrVideos: string;
     time?: string | Date;
   };
+}
+
+// 添加类型定义
+interface HazardData {
+  _id: string;
+  state: string;
+  detail: string;
+  place: string;
+  time: string;
+  PhotosOrVideos: string;
 }
 
 const Sweep: React.FC = () => {
@@ -134,111 +144,46 @@ const Sweep: React.FC = () => {
         }
     };
 
-  const handleScanResult = (qrCodeContent: string) => {
-    try {
-      // console.log('扫描到的二维码内容:', qrCodeContent);
-      
-      // 检查是否是隐患二维码
-      if (qrCodeContent.startsWith('YZY_')) {
-        // 尝试提取信息
-        const parts = qrCodeContent.split('_');
-        if (parts.length >= 3) {  // 至少需要ID和状态
-          const _id = parts[1];
-          const state = parts[2];
-          
-          // 显示加载提示
-          Toast.show({
-            content: '正在处理二维码内容...'
-          });
-          
-          // 构建隐患信息对象并跳转
-          const hazardData = {
-            _id: _id,
-            state: state,
-            detail: parts.length >= 4 ? decodeURIComponent(parts[3]) : '',
-            place: parts.length >= 5 ? decodeURIComponent(parts[4]) : '',
-            PhotosOrVideos: parts.length >= 6 ? decodeURIComponent(parts[5]) : ''
-          };
-          
-          // console.log('解析的隐患数据:', hazardData);
-          
-          // 更新最后扫描结果
-          setLastResult({
-            type: 'internal',
-            content: '发现隐患信息，点击查看详情',
-            data: hazardData,
-            timestamp: Date.now()
-          });
-          
-          // 根据状态处理不同的情况
-          if (state === '1') {
-            Toast.show({
-              onClose: () => {
-                // 跳转到处理页面
-                nav('/Chuli', { 
-                  state: hazardData
-                });
-              }
-            });
-          } else if (state === '2') {
-            Toast.show({
-              onClose: () => {
-                nav('/Chuli', { 
-                  state: hazardData
-                });
-              }
-            });
-          } else if (state === '3') {
-            Toast.show({
-              onClose: () => {
-                nav('/Chuli', { 
-                  state: hazardData
-                });
-              }
-            });
-          } else {
-            Toast.show('未知的隐患状态');
-          }
-        } else {
-          // 二维码格式不正确
-          Toast.show('二维码格式不正确');
-          setLastResult({
-            type: 'unknown',
-            content: '二维码格式不正确，格式应为: YZY_ID_状态_描述_地点_图片',
-            timestamp: Date.now()
-          });
-        }
-      } else if (qrCodeContent.startsWith('http://') || qrCodeContent.startsWith('https://')) {
-        setLastResult({
-          type: 'external',
-          content: qrCodeContent,
-          timestamp: Date.now()
-        });
-        Toast.show('发现外部链接');
-      } else {
-        setLastResult({
-          type: 'unknown',
-          content: qrCodeContent,
-          timestamp: Date.now()
-        });
-        Toast.show('未知类型的二维码');
-      }
-    } catch (error) {
-      console.error('处理二维码内容时出错:', error);
+  const handleScanResult = (result: string) => {
+    if (result.startsWith('YZY_')) {
+      const [prefix, id, state, detail, place, photos] = result.split('_');
+      const hazardData = {
+        _id: id,
+        state: state,
+        detail: decodeURIComponent(detail),
+        place: decodeURIComponent(place),
+        PhotosOrVideos: decodeURIComponent(photos)
+      };
       setLastResult({
-        type: 'unknown',
-        content: `二维码解析失败: ${error instanceof Error ? error.message : '未知错误'}`,
-        timestamp: Date.now()
+        type: 'internal',
+        content: result,
+        timestamp: new Date().toISOString(),
+        data: hazardData
       });
-      Toast.show('二维码解析失败，请重试');
+      
+      // 直接根据状态跳转到对应页面
+      if (state === '1') {
+        nav('/Chuli', { state: hazardData });
+      } else {
+        nav('/Detail', { state: hazardData });
+      }
+    } else {
+      setLastResult({
+        type: 'external',
+        content: result,
+        timestamp: new Date().toISOString()
+      });
     }
   };
 
   const handleResultClick = () => {
     if (lastResult?.type === 'internal' && lastResult.data) {
-      nav('/Chuli', { 
-        state: lastResult.data
-      });
+      const hazardData = lastResult.data;
+      if (hazardData.state === '1') {
+        nav('/Chuli', { state: hazardData });
+      } else {
+        nav('/Detail', { state: hazardData });
+      }
     }
   };
 

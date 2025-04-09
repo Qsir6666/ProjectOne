@@ -57,7 +57,7 @@ const Detail: React.FC = () => {
         title: `${userName}已指派处理中`,
         description: (
           <>
-            <p>指派人：维修员-王五</p>
+            <p>指派人：维修员-李总</p>
             <p>处理期限：<TimeFormatter date={details?.time} format="YYYY-MM-DD" /></p>
             <p>确认隐患类型：校园第三方建筑</p>
           </>

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import chuli from '../src/css/chuli.module.css'
 import { Check, CheckClose } from '@nutui/icons-react'
-import { NavBar } from '@nutui/nutui-react'
-import { ArrowLeft } from '@nutui/icons-react'
-import { Button } from '@nutui/nutui-react'
+// import { NavBar } from '@nutui/nutui-react'
+// import { ArrowLeft } from '@nutui/icons-react'
+// import { Button } from '@nutui/nutui-react'
 import axios from 'axios'
 
 interface StatusConfig {

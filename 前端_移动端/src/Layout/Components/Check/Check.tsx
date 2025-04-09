@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { NavBar, Sticky, Button, Loading } from "@nutui/nutui-react";
+import { NavBar, Sticky, Button, Loading, Toast } from "@nutui/nutui-react";
 import { ArrowLeft, Close, Add, QrCode } from "@nutui/icons-react";
 import Check from "../../../css/check.module.css";
 import userService from "../../../../axios/userService";
 import TimeFormatter from "../../../pages/TimeFormatter";
 import QRCodeGenerator from "../../../pages/Qrcode";
+import QRCodeSVG from "qrcode.react";
 
 // 定义用户信息的类型
 interface UserInfo {
@@ -129,6 +130,27 @@ const App: React.FC = () => {
     sx();
   }, [cate]);
 
+  const renderQRCode = (item: HiddenInfo) => {
+    // 构建二维码内容，确保与扫描端格式匹配
+    const qrContent = `YZY_${item._id}_${item.state}_${encodeURIComponent(item.detail)}_${encodeURIComponent(item.place)}_${encodeURIComponent(item.PhotosOrVideos)}`;
+
+    return (
+      <QRCodeGenerator 
+        value={qrContent}
+        options={{
+          errorCorrectionLevel: 'H',
+          margin: 1,
+          scale: 4,
+          width: 128,
+          color: {
+            dark: '#000000',
+            light: '#ffffff'
+          }
+        }}
+      />
+    );
+  };
+
   return (
     <>
       {isLoading && (
@@ -245,9 +267,7 @@ const App: React.FC = () => {
                 </ul>
 
                 <div className={Check.erwei}>
-                  <QRCodeGenerator 
-                    value={`YZY_${i._id}_${i.state}_${encodeURIComponent(i.detail)}_${encodeURIComponent(i.place)}_${encodeURIComponent(i.PhotosOrVideos)}`}
-                  />
+                  {renderQRCode(i)}
                 </div>
               </div>
             </div>
@@ -330,9 +350,7 @@ const App: React.FC = () => {
                       </li>
 
                       <div className={Check.erwei}>
-                        <QRCodeGenerator 
-                          value={`YZY_${i._id}_${i.state}_${encodeURIComponent(i.detail)}_${encodeURIComponent(i.place)}_${encodeURIComponent(i.PhotosOrVideos)}`}
-                        />
+                        {renderQRCode(i)}
                       </div>
                     </ul>
                   </div>
