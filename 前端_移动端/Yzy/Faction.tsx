@@ -1,150 +1,348 @@
-import React, { useEffect, useState } from "react";
-import { NavBar, Toast, Button, Form, Sticky, Cell, DatePicker, type PickerOption } from '@nutui/nutui-react'
-import { Star, ArrowLeft, Close } from '@nutui/icons-react'
-import faction from '../src/css/faction.module.css'
+import React, { useState, useEffect } from "react";
+import {
+  NavBar,
+  Button,
+  Form,
+  Sticky,
+  Cell,
+  DatePicker,
+  Dialog,
+  type PickerOption,
+} from "@nutui/nutui-react";
+import { Close, ArrowLeft } from "@nutui/icons-react";
+import faction from "../src/css/faction.module.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
+// API基础URL配置
+const API_BASE_URL = 'http://localhost:3000';
 
-const Faction: React.FC = () => {
-  const [form] = Form.useForm()
-  // const account = Form.useWatch('account', form)
-  // 日历
-  const defaultValue = new Date()
-  useEffect(() => {
-
-    console.log(defaultValue);
-
-  }, [])
-  const defaultDescription = `${defaultValue.getFullYear()}-${defaultValue.getMonth() + 1
-    }-${defaultValue.getDate()}`
-  const [show, setShow1] = useState(false)
-  const [desc1, setDesc1] = useState(defaultDescription)
-
-  const [value, setValue] = useState('2023/01/01')
-  const [show2, setShow2] = useState(false)
-  const [desc2, setDesc2] = useState('')
-  const confirm1 = (values: (string | number)[], options: PickerOption[]) => {
-    setDesc1(options.map((option) => option.text).join(' '))
-  }
-  const change = (options: PickerOption[], values: (string | number)[]) => {
-    const v = values.join('/')
-    setValue(v)
-    setDesc2(options.map((option) => option.text).join(' '))
-  }
-
-  // 按钮
-
-  return (
-    <div className={faction.box}>
-      <Sticky>
-        <NavBar style={{ backgroundColor: 'white', width: '100vw' }}
-          left={<Close />}
-          back={<ArrowLeft />}
-          onBackClick={(e) => Toast.show('返回')}
-        >
-          <div className="title">
-            <span className="desc">详情</span>
-          </div>
-        </NavBar>
-
-      </Sticky>
-
-      <div style={{ fontSize: '15px', marginLeft: '18px', marginTop: '10px' }}>
-        隐患确认信息
-      </div>
-      <div className={faction.central}>
-        <div className={faction.centralTow} style={{ borderBottom: '0px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-          <span style={{ fontSize: '15px' }}>隐患确认</span>
-          <div className={faction.radio}>
-            <input type="radio" name="fruit" value="1" />是隐患
-            <input type="radio" name="fruit" value="2" />非隐患
-            <input type="radio" name="fruit" value="3" />重复上报
-          </div>
-        </div>
-        <div className={faction.centralTow} style={{ borderBottom: '1px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-          <span style={{ fontSize: '15px' }}>隐患类型</span><span style={{ color: 'rgb(137, 137, 137)', fontSize: '15px' }}>{ }</span>
-        </div>
-        <div className={faction.centralTow} style={{ borderBottom: '1px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-          <span style={{ fontSize: '15px' }}>隐患级别</span><span style={{ color: 'rgb(137, 137, 137)' }}>{ }</span>
-        </div>
-        <div className={faction.centralTow} style={{ borderBottom: '0px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-          <span style={{ fontSize: '15px' }}>隐患描述</span>
-          <textarea id="myTextarea" name="myTextarea" rows={8} cols={40} className={faction.text}>
-
-          </textarea>
-        </div>
-      </div>
-
-      <div style={{ fontSize: '15px', marginLeft: '18px', lineHeight: '45px' }}>
-        派指人员
-      </div>
-
-      <div className={faction.centrala}>
-        <div className={faction.centralTow} style={{ borderBottom: '0px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-          <span style={{ fontSize: '15px' }}>处理负责人</span>
-          <div className={faction.cell}>
-            <Cell>
-              <select className={faction.select} >
-                <option value=''>请选择</option>
-                <option>李总</option>
-                <option>王总</option>
-              </select>
-            </Cell>
-          </div>
-        </div>
-        <div className={faction.centralTow} style={{ borderBottom: '0px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-          <span style={{ fontSize: '15px' }}>处理期限</span>
-
-          <div className={faction.cell}>
-            <Cell
-              title="请选择日期"
-              description={desc2}
-              onClick={() => setShow2(true)}
-            />
-            <DatePicker
-              title="日期选择"
-              visible={show2}
-              value={new Date(value)}
-              showChinese
-              onClose={() => setShow2(false)}
-              threeDimensional={false}
-              onChange={(options, values) => change(options, values)}
-            />
-          </div>
-
-        </div>
-        <div className={faction.centralTow} style={{ borderBottom: '0px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-          <span style={{ fontSize: '15px' }}>抄送人</span>
-          <div className={faction.cell}>
-            <Cell>
-              <select className={faction.select} >
-                <option value=''>请选择</option>
-                <option>李总</option>
-                <option>王总</option>
-              </select>
-            </Cell>
-          </div>
-        </div>
-        <div className={faction.centralTow} style={{ borderBottom: '0px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-          <span style={{ fontSize: '15px' }}>处理意见</span>
-          <Cell className={faction.cell}>
-            <textarea id="myTextarea" name="myTextarea" rows={8} cols={40} className={faction.text} />
-
-          </Cell>
-        </div>
-      </div>
-
-      <Sticky threshold={0} position="bottom">
-        <Button style={{ width: '50vw', height: '40px', backgroundColor: '#f2f2f2', color: 'black', border: '0px' }} shape="square" >
-          取消
-        </Button>
-        <Button style={{ width: '50vw', height: '40px', backgroundColor: '#0099ff', color: 'white', border: '0px' }} shape="square">
-          确定
-        </Button>
-      </Sticky>
-    </div >
-  )
+interface FactionFormData {
+  hazardConfirmation: string;
+  hazardType: string;
+  hazardLevel: string;
+  hazardDescription: string;
+  responsiblePerson: string;
+  deadline: string;
+  ccPerson: string;
+  handleSuggestion: string;
 }
 
+interface LocationState {
+  id: string;
+  type?: string;
+  place?: string;
+  detail?: string;
+}
+
+const Faction: React.FC = () => {
+  const nav = useNavigate();
+  const location = useLocation();
+  const [hiddenId, setHiddenId] = useState<string>("");
+  const [initialData, setInitialData] = useState<LocationState | null>(null);
+  const [formData, setFormData] = useState<FactionFormData>({
+    hazardConfirmation: "",
+    hazardType: "",
+    hazardLevel: "一般隐患",
+    hazardDescription: "",
+    responsiblePerson: "",
+    deadline: "",
+    ccPerson: "",
+    handleSuggestion: "",
+  });
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  useEffect(() => {
+    const state = location.state as LocationState;
+    if (state?.id) {
+      setHiddenId(state.id);
+      setInitialData(state);
+      setFormData(prev => ({
+        ...prev,
+        hazardType: state.type || "校园第三方建筑",
+        hazardDescription: state.detail || "",
+      }));
+    } else {
+      Dialog.alert({
+        title: "错误",
+        content: "缺少隐患ID，请返回重试",
+        onConfirm: () => {
+          nav(-1);
+        },
+      });
+    }
+  }, [location.state, nav]);
+
+  const handleInputChange = (field: keyof FactionFormData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleDateChange = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      deadline: value
+    }));
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (!hiddenId) {
+        throw new Error('缺少隐患ID，请返回重试');
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/hidden-trouble/${hiddenId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || '删除失败');
+      }
+
+      Dialog.alert({
+        title: "提示",
+        content: data.message,
+        onConfirm: () => {
+          nav('/Check');
+        },
+      });
+    } catch (error) {
+      console.error('删除失败:', error);
+      Dialog.alert({
+        title: "错误",
+        content: error instanceof Error ? error.message : "删除失败，请重试",
+      });
+    }
+  };
+
+  const handleSubmit = async () => {
+    // 表单验证
+    if (!formData.hazardConfirmation) {
+      return Dialog.alert({
+        title: "提示",
+        content: "请选择隐患确认",
+      });
+    }
+
+    // 如果是非隐患或重复上报，直接显示删除确认对话框
+    if (formData.hazardConfirmation === "非隐患" || formData.hazardConfirmation === "重复上报") {
+      setShowDeleteDialog(true);
+      return;
+    }
+
+    if (formData.hazardConfirmation === "是隐患") {
+      if (!formData.responsiblePerson) {
+        return Dialog.alert({
+          title: "提示",
+          content: "请选择处理负责人",
+        });
+      }
+      if (!formData.deadline) {
+        return Dialog.alert({
+          title: "提示",
+          content: "请选择处理期限",
+        });
+      }
+
+      try {
+        if (!hiddenId) {
+          throw new Error('缺少隐患ID，请返回重试');
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/hidden-trouble/${hiddenId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            hazardConfirmation: formData.hazardConfirmation,
+            responsiblePerson: formData.responsiblePerson,
+            deadline: formData.deadline,
+            ccPerson: formData.ccPerson,
+            handleSuggestion: formData.handleSuggestion,
+            state: "2", // 更新为处理中状态
+          }),
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || '更新失败');
+        }
+
+        Dialog.alert({
+          title: "提示",
+          content: data.message,
+          onConfirm: () => {
+            nav(-1);
+          },
+        });
+      } catch (error) {
+        console.error('更新失败:', error);
+        Dialog.alert({
+          title: "错误",
+          content: error instanceof Error ? error.message : "操作失败，请重试",
+        });
+      }
+    }
+  };
+
+  return (
+    <div className={faction.container}>
+      <div className={faction.aaaa}>
+        <NavBar
+          className={faction.navbar}
+          left={<Close />}
+          back={<ArrowLeft />}
+          onBackClick={() => nav(-1)}
+        >
+          详情
+        </NavBar>
+      </div>
+
+      <Form className={faction.form}>
+        <div className={faction.section}>
+          <h3 className={faction.sectionTitle}>隐患确认信息</h3>
+
+          <div className={faction.formGroup}>
+            <label>隐患确认</label>
+            <div className={faction.radioGroup}>
+              {["是隐患", "非隐患", "重复上报"].map((option) => (
+                <label key={option} className={faction.radioLabel}>
+                  <input
+                    type="radio"
+                    name="hazardConfirmation"
+                    value={option}
+                    checked={formData.hazardConfirmation === option}
+                    onChange={(e) =>
+                      handleInputChange("hazardConfirmation", e.target.value)
+                    }
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className={faction.formGroup}>
+            <label>隐患类型</label>
+            <span className={faction.value}>校园食品安全</span>
+          </div>
+
+          <div className={faction.formGroup}>
+            <label>隐患级别</label>
+            <span className={faction.value}>{formData.hazardLevel}</span>
+          </div>
+
+          <div className={faction.formGroup}>
+            <label>隐患描述</label>
+            <textarea
+              value={formData.hazardDescription}
+              onChange={(e) =>
+                handleInputChange("hazardDescription", e.target.value)
+              }
+              className={faction.textarea}
+              rows={3}
+            />
+          </div>
+        </div>
+
+        {formData.hazardConfirmation === "是隐患" && (
+          <div className={faction.section}>
+            <h3 className={faction.sectionTitle}>派指人员</h3>
+
+            <div className={faction.formGroup}>
+              <label>处理负责人</label>
+              <select
+                value={formData.responsiblePerson}
+                onChange={(e) =>
+                  handleInputChange("responsiblePerson", e.target.value)
+                }
+                className={faction.select}
+              >
+                <option value="">请选择</option>
+                <option value="李总">李总</option>
+                <option value="王总">王总</option>
+              </select>
+            </div>
+
+            <div className={faction.formGroup}>
+              <label>处理期限</label>
+              <Cell
+                className={faction.dateCell}
+                title={formData.deadline || "请选择日期"}
+                onClick={() => setShowDatePicker(true)}
+              />
+              <DatePicker
+                title="选择日期"
+                visible={showDatePicker}
+                showChinese
+                type="date"
+                defaultValue={new Date()}
+                onClose={() => setShowDatePicker(false)}
+                onConfirm={(options: any, values: (string | number)[]) => {
+                  const selectedDate = `${values[0]}-${String(values[1]).padStart(2, '0')}-${String(values[2]).padStart(2, '0')}`;
+                  handleDateChange(selectedDate);
+                  setShowDatePicker(false);
+                }}
+              />
+            </div>
+
+            <div className={faction.formGroup}>
+              <label>抄送人</label>
+              <select
+                value={formData.ccPerson}
+                onChange={(e) => handleInputChange("ccPerson", e.target.value)}
+                className={faction.select}
+              >
+                <option value="">请选择</option>
+                <option value="李总">李总</option>
+                <option value="王总">王总</option>
+              </select>
+            </div>
+
+            <div className={faction.formGroup}>
+              <label>处理意见</label>
+              <textarea
+                value={formData.handleSuggestion}
+                onChange={(e) =>
+                  handleInputChange("handleSuggestion", e.target.value)
+                }
+                className={faction.textarea}
+                rows={8}
+              />
+            </div>
+          </div>
+        )}
+      </Form>
+
+      <div className={faction.footer}>
+        <Button className={faction.cancelButton} onClick={() => nav(-1)}>
+          取消
+        </Button>
+        <Button className={faction.submitButton} onClick={handleSubmit}>
+          确定
+        </Button>
+      </div>
+
+      <Dialog
+        title="提示"
+        visible={showDeleteDialog}
+        onConfirm={handleDelete}
+        onCancel={() => setShowDeleteDialog(false)}
+      >
+        是否删除该隐患？
+      </Dialog>
+    </div>
+  );
+};
+
 export default Faction;
-
-

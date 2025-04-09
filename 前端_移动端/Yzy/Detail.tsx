@@ -1,105 +1,176 @@
 import React, { useState, useEffect } from "react";
-import { NavBar, Toast, Steps, Step, Button } from '@nutui/nutui-react'
+import { NavBar, Toast, Steps, Step, Button, ImagePreview } from '@nutui/nutui-react'
 import { ArrowLeft } from '@nutui/icons-react'
 import style from '../src/css/detail.module.css';
 import { useLocation, useNavigate } from "react-router-dom";
 import TimeFormatter from '../src/pages/TimeFormatter'
+import { Dialog } from '@nutui/nutui-react'
+
+interface DetailData {
+  _id: string;
+  type: string;
+  place: string;
+  detail: string;
+  PhotosOrVideos: string[];
+  time: string;
+  state: string;
+  dispose: boolean;
+  repai?: string;
+  date?: string;
+  peple?: string;
+}
+
+interface LocationState {
+  _id: string;
+  state: string;
+  [key: string]: any;
+}
 
 const Detail: React.FC = () => {
-    const loc = useLocation();
-    const [details, setDetails] = useState([]);
-    const name = loc.state.userName.userName
+  const navigate = useNavigate();
+  const location = useLocation();
+  const loc = location.state as LocationState;
+  const [details, setDetails] = useState<DetailData | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const userName = loc.userName?.userName || '';
 
-    const nav = useNavigate();
-    // const darkTheme={
-    //     nutuiStepsWaitTitleColor:"cornflowerblue",
-    //     nutuiStepsProcessTitleColor:"cornflowerblue",
-    //     nutuiStepsBaseLineBackground:'cornflowerblue',
-    //     nutuiStepsBaseTitleColor:"cornflowerblue",
-    //     nutuiStepsWaitTitleColor:"cornflowerblue"
-    // }
-    useEffect(() => {
-        setDetails(loc.state)
+  useEffect(() => {
+    if (loc) {
+      setDetails(loc);
+    }
+  }, [loc]);
 
-    }, [details])
-    return (
-        <div className={style.box}>
-            <NavBar className={style.navbar}
-                back={
-                    <>
-                        <ArrowLeft />
-                        返回
-                    </>
-                }
-                onBackClick={(e) => nav('/Check')}
-            >
-                详情
-            </NavBar>
-            <div className={style.boxHerd}>
-                <div className={style.boxHerdTow}>
-                    <span style={{ fontSize: '14px' }}>隐患描述:{details.detail}</span>
-                    <img src={details.PhotosOrVideos} alt="" width={60} height={60} />
-                </div>
+  const renderSteps = () => {
+    const steps = [
+      {
+        value: '1',
+        title: `${userName}上报隐患待审核`,
+        description: (
+          <>
+            <p>提交时间：</p>
+            <TimeFormatter date={details?.time} format="YYYY-MM-DD HH:mm:ss" />
+          </>
+        )
+      },
+      {
+        value: '2',
+        title: `${userName}已指派处理中`,
+        description: (
+          <>
+            <p>指派人：维修员-王五</p>
+            <p>处理期限：<TimeFormatter date={details?.time} format="YYYY-MM-DD" /></p>
+            <p>确认隐患类型：校园第三方建筑</p>
+          </>
+        )
+      },
+      {
+        value: '3',
+        title: `${userName}处理完毕已完成`,
+        description: (
+          <>
+            <p>完成时间：<TimeFormatter date={details?.time} format="YYYY-MM-DD" /></p>
+          </>
+        )
+      }
+    ];
+
+    return steps.slice(0, Number(details?.state));
+  };
+
+  const handleFactionClick = () => {
+    if (details && details._id) {
+      navigate('/faction', { 
+        state: { 
+          id: details._id,
+          type: details.type,
+          place: details.place,
+          detail: details.detail
+        } 
+      });
+    } else {
+      Dialog.alert({
+        title: "错误",
+        content: "无法获取隐患信息",
+      });
+    }
+  };
+
+  return (
+    <div className={style.box}>
+      <NavBar
+        className={style.navbar}
+        back={
+          <>
+            <ArrowLeft />
+            返回
+          </>
+        }
+        onBackClick={() => navigate(-1)}
+      >
+        详情
+      </NavBar>
+
+      <div className={style.content}>
+        <div className={style.boxHerd}>
+          <div className={style.boxHerdTow}>
+            <span className={style.description}>隐患描述: {details?.detail}</span>
+            <div className={style.imageContainer}>
+              <img
+                src={details?.PhotosOrVideos}
+                alt="隐患照片"
+                onClick={() => setShowPreview(true)}
+                className={style.previewImage}
+              />
+              <ImagePreview
+                autoPlay={0}
+                images={details?.PhotosOrVideos}
+                visible={showPreview}
+                onClose={() => setShowPreview(false)}
+              />
             </div>
-            <div className={style.central}>
-                <div className={style.centralTow} style={{ borderBottom: '1px solid rgb(197, 197, 197)', fontSize: '15px' }}>
-                    <span style={{ fontSize: '15px' }}>隐患类型</span><span style={{ color: 'rgb(137, 137, 137)', fontSize: '15px' }}>{details.type}</span>
-                </div>
-                <div className={style.centralTow}>
-                    <span style={{ fontSize: '15px' }}>隐患地点</span><span style={{ color: 'rgb(137, 137, 137)' }}>{details.place}</span>
-                </div>
-            </div>
-            <div className={style.centralP}>
-                <p style={{ fontSize: '15px' }}>隐患流程</p>
-            </div>
-
-            {/* <ConfigProvider theme={darkTheme}> */}
-            <div style={{ height: '54.5%', padding: '30px 30px', backgroundColor: 'white' }}>
-                <Steps direction="vertical" dot value={details.state} style={{}}>
-                    <Step
-                        value={1}
-                        title={name + "上报隐患" + "待审核"}
-                        description={<>
-                            <p>提交时间：</p>
-                            <TimeFormatter date={details.time} format="YYYY-MM-DD HH:mm:ss" />
-                        </>
-                        }
-                    />
-
-                    {details.state == '2' || details.state == '3' ?
-                        <Step value={2}
-                            title={name + "以指派" + "处理中"}
-                            description={<>
-                                <p>指派人：维修员-王五</p>
-                                <p>处理期限：<TimeFormatter date={details.time} format="YYYY-MM-DD" /></p>
-                                <p>确认隐患类型：{details.type}</p>
-                                <p></p>
-                            </>}
-                        />
-                        : undefined}
-                    {details.state == '3' ?
-                        <Step
-                            value={3}
-                            title={name + "处理完毕" + "已完成"}
-                            description={
-                                <>
-                                    <p>完成时间：<TimeFormatter date={details.time} format="YYYY-MM-DD" /></p>
-                                </>
-                            }
-                        />
-                        : undefined}
-
-                </Steps>
-                {details.state == '1' ?
-                    <Button block type="primary" onClick={()=>{nav('/Faction')}}>
-                        派指
-                    </Button> : undefined
-                }
-
-            </div>
-            {/* </ConfigProvider> */}
+          </div>
         </div>
-    )
-}
+
+        <div className={style.central}>
+          <div className={style.centralTow}>
+            <span>隐患类型</span>
+            <span className={style.value}>校园第三方建筑</span>
+          </div>
+          <div className={style.centralTow}>
+            <span>隐患地点</span>
+            <span className={style.value}>{details?.place}</span>
+          </div>
+        </div>
+
+        <div className={style.processSection}>
+          <h3>隐患流程</h3>
+          <div className={style.stepsContainer}>
+            <Steps direction="vertical" dot value={details?.state}>
+              {renderSteps().map((step, index) => (
+                <Step
+                  key={step.value}
+                  value={Number(step.value)}
+                  title={step.title}
+                  description={step.description}
+                />
+              ))}
+            </Steps>
+          </div>
+
+          {details?.state === '1' && (
+            <Button
+              block
+              type="primary"
+              className={style.assignButton}
+              onClick={handleFactionClick}
+            >
+              派指
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Detail;

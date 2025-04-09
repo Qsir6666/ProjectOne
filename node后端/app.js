@@ -12,7 +12,7 @@ var YZYRouter = require('./routes/YZY');
 var PDLRouter = require('./routes/PDL');
 var PQKRouter = require('./routes/PQK');
 var WSXRouter = require('./routes/WSX');
-
+const hiddenRouter = require('./router/hidden');
 
 var app = express();
 
@@ -40,6 +40,7 @@ app.use('/YZY', YZYRouter);//杨振宇
 app.use('/PDL', PDLRouter);//潘栋梁
 app.use('/PQK', PQKRouter);//庞庆可
 app.use('/WSX', WSXRouter);//王世信
+app.use('/api', hiddenRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

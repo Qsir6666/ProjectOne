@@ -29,6 +29,15 @@ interface Type {
     value: string,
 }
 
+// 隐患处理接口
+interface ProcessHazardData {
+  responsiblePerson: string; // 负责人
+  deadline: string; // 处理期限
+  ccPerson: string; // 抄送人
+  handleSuggestion?: string; // 处理意见
+  state: string; // 状态
+}
+
 // 获取上报隐患数据
 const hiddenUsers = async (): Promise<User[]> => {
     try {
@@ -60,10 +69,33 @@ const getType = async():Promise<Type[]>=>{
     }
   }
 
+// 根据ID获取隐患详情
+const getHazardDetail = async (id: string) => {
+  try {
+    const response = await instance.get(`/hidden-trouble/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("获取隐患详情失败", error);
+    throw error;
+  }
+}
+
+// 处理隐患
+const processHazard = async (id: string, data: ProcessHazardData) => {
+  try {
+    const response = await instance.put(`/hidden-trouble/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("处理隐患失败", error);
+    throw error;
+  }
+}
+
 export default {
     hiddenUsers,
     login,
     getType,
-
+    getHazardDetail,
+    processHazard
 }
 

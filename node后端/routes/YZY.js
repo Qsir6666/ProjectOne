@@ -1,4 +1,4 @@
-var express = require('express');
+                                                                     var express = require('express');
 var router = express.Router();
 const multer = require("multer");
 var path = require('path');
@@ -11,7 +11,6 @@ const { HiddenTroubleModel, TypeModel, loginModel, } = require('../db/index')
 router.get('/login', async (req, res) => {
 
   let loginFind = await loginModel.find()
-  // console.log(loginFind);
 
   res.send({
     code: 200,
@@ -22,17 +21,9 @@ router.get('/login', async (req, res) => {
 })
 // 上报隐患数据接口
 router.get('/hidden', async (req, res) => {
-  // let { abc } = req.query
-  // console.log(abc);
-  
-  // let onKe = new RegExp(abc)
-  // let arr = [{}]
-  // if (abc) {
-  //   arr.push({ abc: onKe })
-  // }
+
 
   let hiddenFind = await HiddenTroubleModel.find().populate('userName')
-  // console.log(hiddenFind);
 
   res.send({
     code: 200,
@@ -44,7 +35,6 @@ router.get('/hidden', async (req, res) => {
 router.get('/type', async (req, res) => {
 
   let typeFind = await TypeModel.find()
-  // console.log(typeFind,'111');
 
   res.send({
     code: 200,
@@ -55,7 +45,6 @@ router.get('/type', async (req, res) => {
 // 提交隐患
 router.post('/hiddenAdd', (req, res) => {
   let add = req.body
-  // const time = add.time
   console.log(add.time);
 
   HiddenTroubleModel.create(add)
@@ -70,7 +59,6 @@ router.post('/hiddenAdd', (req, res) => {
 // 大文件上传
 router.post("/check", (req, res) => {
   const { fileHash } = req.body;
-  // console.log("fileHash check",fileHash)
 
   const fileChunkDir = path.join(uploadDir, fileHash); // 分片存储目录
   console.log(fileChunkDir, 'asaaaadas');
@@ -79,7 +67,7 @@ router.post("/check", (req, res) => {
     return res.json([]); // 如果目录不存在，返回空数组
   }
 
-  // 返回已上传的分片索引
+  // 读取目录中的所有分片文件名
   const uploadedChunks = fs.readdirSync(fileChunkDir).map((chunk) => {
     return parseInt(chunk.split("-")[1]); // 提取分片索引
   });
@@ -92,9 +80,10 @@ router.post("/check", (req, res) => {
   })
 });
 
+// multer处理文件上传
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const fileHash = req.query.fileHash; // 从查询参数获取 fileHash
+    const fileHash = req.query.fileHash; // 并将分片存储到fileHash目录中
     const chunkDir = path.join(uploadDir, fileHash);
     // 确保切片目录存在
     if (!fs.existsSync(chunkDir)) {

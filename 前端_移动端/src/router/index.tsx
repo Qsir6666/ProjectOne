@@ -20,10 +20,14 @@ const Mine = lazy(() => import('../Layout/Components/Mine/Mine.tsx')) //我的
 // 杨振宇
 const Report = lazy(() => import('../Layout/Components/Report/Report.tsx')) //上报隐患
 const Examine = lazy(() => import('../Layout/Components/Examine/Examine.tsx')) // 日常检查
-const ExamineDate = lazy(() => import('../Layout/Components/ExamineDate/ExamineDate.tsx')) //检查隐患
+// const ExamineDate = lazy(() => import('../Layout/Components/ExamineDate/ExamineDate.tsx')) //检查隐患
 const Check = lazy(() => import('../Layout/Components/Check/Check.tsx')) //隐患排查
 const Detail = lazy(() => import('../../Yzy/Detail.tsx')) //隐患详情
 const Faction = lazy(() => import('../../Yzy/Faction.tsx')) //派指人员维修
+const Sweep = lazy(() => import('../../Yzy/Sweep.tsx')) //派指人员维修
+const Qrcode = lazy(() => import('../pages/Qrcode.tsx')) //派指人员维修
+const Chuli = lazy(() => import('../../Yzy/Chuli.tsx')) //派指人员维修
+
 //何百川
 const QingJia = lazy(() => import('../Layout/Components/HBCpages/qingjia.tsx'))
 
@@ -46,15 +50,20 @@ let routes = [
 	// 日常检查
 	{ path: '/examine', element: <Examine></Examine> },
 	// 检查页面(未检查，已检查)
-	{ path: '/ExamineDate', element: <ExamineDate></ExamineDate> },
+	// { path: '/ExamineDate', element: <ExamineDate></ExamineDate> },
 	// 隐患排查
 	{ path: '/Check', element: <Check></Check> },
 	//隐患详情
 	{ path: '/Detail', element: <Detail></Detail> },
 	//派指人员维修
 	{ path: '/Faction', element: <Faction></Faction> },
+	// 扫一扫
+	{path:'/Sweep',element:<Sweep></Sweep>},
+	{path:'/Qrcode',element:<Qrcode></Qrcode>},
+	{path:'/Chuli',element:<Chuli></Chuli>},
 
 
+	
 	{ path: '/menu', element: <Menu></Menu> },
 
 	//何百川
