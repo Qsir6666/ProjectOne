@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { NavBar, Sticky, Button, Loading, Toast } from "@nutui/nutui-react";
+import { NavBar, Button, Loading } from "@nutui/nutui-react";
 import { ArrowLeft, Close, Add, QrCode } from "@nutui/icons-react";
 import Check from "../../../css/check.module.css";
 import userService from "../../../../axios/userService";
@@ -8,17 +8,12 @@ import TimeFormatter from "../../../pages/TimeFormatter";
 import QRCodeGenerator from "../../../pages/Qrcode";
 import QRCodeSVG from "qrcode.react";
 
-// 定义用户信息的类型
-interface UserInfo {
-  imgs: string;
-  userName: string;
-  school: string;
-}
-
-// 定义隐患信息的类型
 interface HiddenInfo {
   _id: string;
-  userName: UserInfo;
+  userName: {
+    school: string;
+    userName: string;
+  };
   state: number;
   time: string | Date;
   detail: string;
@@ -26,10 +21,8 @@ interface HiddenInfo {
   place: string;
 }
 
-// 定义组件
 const App: React.FC = () => {
   const navigate = useNavigate();
-  const [login, setLogin] = useState<any[]>([]);
   const [hidden, setHidden] = useState<HiddenInfo[]>([]);
   const [audit, setAudit] = useState(0);
   const [dispose, setDispose] = useState(0);
@@ -42,22 +35,6 @@ const App: React.FC = () => {
     navigate("/Detail", { state: { ...i } });
   };
 
-  // 获取登录用户
-  const getLogin = async () => {
-    try {
-      const data = await userService.login();
-      setLogin(data);
-    } catch (error) {
-      console.error("加载登陆用户信息失败", error);
-    } finally {
-      // 检查是否两个请求都完成
-      if (!isLoadingUser) {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  // 获取上报的隐患信息
   const getHidden = async () => {
     try {
       const hiddenData = await userService.hiddenUsers();
@@ -65,19 +42,12 @@ const App: React.FC = () => {
     } catch (error) {
       console.error("加载隐患信息失败", error);
     } finally {
-      // 检查是否两个请求都完成
-      if (!isLoadingHidden) {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
   };
 
-  const [isLoadingUser, setIsLoadingUser] = useState(true);
-  const [isLoadingHidden, setIsLoadingHidden] = useState(true);
-
   const hiddenNum = () => {
     const stateCount = { 1: 0, 2: 0, 3: 0 };
-
     hidden.forEach((item: HiddenInfo) => {
       if (stateCount.hasOwnProperty(item.state)) {
         stateCount[item.state]++;
@@ -89,40 +59,18 @@ const App: React.FC = () => {
     setFinish(stateC);
   };
 
-  // 类别筛选
   useEffect(() => {
     hiddenNum();
   }, [hidden]);
 
   useEffect(() => {
     setIsLoading(true);
-    setIsLoadingUser(true);
-    setIsLoadingHidden(true);
-    const fetchData = async () => {
-      try {
-        await Promise.all([
-          (async () => {
-            await getLogin();
-            setIsLoadingUser(false);
-          })(),
-          (async () => {
-            await getHidden();
-            setIsLoadingHidden(false);
-          })()
-        ]);
-      } finally {
-        if (!isLoadingUser && !isLoadingHidden) {
-          setIsLoading(false);
-        }
-      }
-    };
-    fetchData();
+    getHidden();
   }, []);
 
   const sx = () => {
     let acc = [...hidden];
     acc = hidden.filter((item: HiddenInfo) => item.state.toString() === cate);
-    console.log(acc);
     setHiddenTow([...acc]);
   };
 
@@ -131,7 +79,6 @@ const App: React.FC = () => {
   }, [cate]);
 
   const renderQRCode = (item: HiddenInfo) => {
-    // 构建二维码内容，确保与扫描端格式匹配
     const qrContent = `YZY_${item._id}_${item.state}_${encodeURIComponent(item.detail)}_${encodeURIComponent(item.place)}_${encodeURIComponent(item.PhotosOrVideos)}`;
 
     return (
